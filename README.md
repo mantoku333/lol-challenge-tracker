@@ -1,5 +1,7 @@
 # LoL Challenge Tracker
 
+世界旅行・調和を追加したローカル版については [日本語の使い方・検証結果](README.team-ja.md) を参照してください。
+
 > A simple app to see the advancement of League of Legends challnges where you need to track champions.
 
 ![screenshot](screenshot.png)

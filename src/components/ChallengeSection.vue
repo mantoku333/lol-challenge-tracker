@@ -87,7 +87,7 @@ const championsList = computed(() => {
   if (selectedTypes.value.size > 0) {
     // We don't filter on the secondary role, it doesn't narrow enough
     // e.g. Riven, Lucian would count as assassins
-    list = list.filter((c) => selectedTypes.value.has(c.roles[0]))
+    list = list.filter((c) => c.roles?.[0] && selectedTypes.value.has(c.roles[0]))
   }
 
   if (search.value) {

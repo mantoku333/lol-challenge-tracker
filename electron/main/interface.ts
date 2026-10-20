@@ -19,6 +19,7 @@ export type LCUEventMessage =
     }
 
 export interface ChampSelectSessionEvent {
+  myTeam?: { cellId: number; championId: number }[]
   actions: {
     type: string
     actorCellId: number

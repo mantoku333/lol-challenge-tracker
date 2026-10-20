@@ -7,8 +7,13 @@ export interface LCUCredentials {
 }
 
 export interface RawChallenge {
-  completedIds: number[]
-  name: string
-  description: string
-  // Lot more but not used
+  completedIds?: number[]
+  name?: string
+  description?: string
+  currentValue?: unknown
+  currentLevel?: unknown
+  thresholds?: unknown
+  availableIds?: unknown
+  parentId?: unknown
+  isCapstone?: unknown
 }
