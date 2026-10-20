@@ -3,18 +3,17 @@ import { AramStats, Challenge, Champion, GameMode, Stat } from "../types/lol"
 
 export async function makeLCURequest<T = any>(
   credentials: LCUCredentials,
-  path: string
+  path: string,
 ): Promise<T> {
   const { address, port, username, password, protocol } = credentials
   const url = `${protocol}://${address}:${port}`
   const headers = new Headers({
     accept: "application/json",
-    Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString(
-      "base64"
-    )}`,
+    Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`,
   })
 
-  const res = await fetch(`${url}${path}`, { headers })
+  const res = await fetch(`${url}${path}`, { headers, signal: AbortSignal.timeout(12000) })
+  if (!res.ok) throw new Error(`LCU HTTP ${res.status}`)
   return await res.json()
 }
 
@@ -46,16 +45,16 @@ export function parseMerakiFile(json: object): AramStats {
 export function challengeFromCompletedIds(
   raw: RawChallenge,
   allChamps: Champion[],
-  mode: GameMode
+  mode: GameMode,
 ): Challenge {
   return {
-    name: raw.name,
-    description: raw.description,
+    name: raw.name ?? "名称未取得",
+    description: raw.description ?? "説明未取得",
     champions: allChamps.map((c) => ({
       ...c,
-      done: raw.completedIds.includes(c.id),
+      done: (raw.completedIds ?? []).includes(c.id),
     })),
-    totalDone: raw.completedIds.length,
+    totalDone: (raw.completedIds ?? []).length,
     mode,
   }
 }
