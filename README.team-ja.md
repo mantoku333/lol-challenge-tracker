@@ -2,7 +2,7 @@
 
 2026-10-20 / バージョン `1.2.0-team.1`
 
-Nyquase/lol-challenge-tracker の `a29c6e32e70257e3aac8264f05582d866afc1a27`（v1.1.4）を基に、世界旅行13項目と調和12項目を追加したローカル開発版です。ブランチは `feat/team-challenges`。GitHubへのフォーク作成・プッシュ・公開は行っていません。
+Nyquase/lol-challenge-tracker の `a29c6e32e70257e3aac8264f05582d866afc1a27`（v1.1.4）を基に、世界旅行13項目と調和12項目を追加した開発版です。開発ブランチは `feat/team-challenges`。変更は [mantoku333 のフォーク](https://github.com/mantoku333/lol-challenge-tracker) 内で管理します。EXEのGitHub Releasesへの公開は行っていません。
 
 ## 起動
 
