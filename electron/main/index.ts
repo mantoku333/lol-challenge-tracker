@@ -21,6 +21,8 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   : RENDERER_DIST
 if (os.release().startsWith("6.1")) app.disableHardwareAcceleration()
 if (process.platform === "win32") app.setAppUserModelId(app.getName())
+// Use the test profile for the single-instance lock as well as stored data.
+if (process.env.LOL_TRACKER_USER_DATA) app.setPath("userData", process.env.LOL_TRACKER_USER_DATA)
 if (!app.requestSingleInstanceLock()) {
   app.quit()
   process.exit(0)
@@ -250,8 +252,6 @@ function watchForClient(win: BrowserWindow) {
   }
 }
 
-// Optional separate profile for development / automated smoke tests.
-if (process.env.LOL_TRACKER_USER_DATA) app.setPath("userData", process.env.LOL_TRACKER_USER_DATA)
 const store = new Store()
 async function main() {
   await app.whenReady()
