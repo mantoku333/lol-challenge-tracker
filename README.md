@@ -1,5 +1,7 @@
 # LoL Challenge Tracker
 
+ARAMのチャンピオン選択中は、味方のピックとベンチの全候補について、自分のチャンピオン別ARAMチャレンジ（All Random All Champs）の達成済み・未達成を自動表示します。リロール・交換に追従し、進捗が取得できない場合は「進捗未取得」と表示します。
+
 世界旅行・調和を追加したローカル版については [日本語の使い方・検証結果](README.team-ja.md) を参照してください。
 
 > A simple app to see the advancement of League of Legends challnges where you need to track champions.

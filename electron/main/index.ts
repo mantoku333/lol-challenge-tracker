@@ -8,7 +8,7 @@ import LCUConnector from "lcu-connector"
 import { WebSocket } from "ws"
 import Store from "electron-store"
 import { LCUEvents } from "./interface.js"
-import { parseTeamSession } from "./team-session.js"
+import { parseTeamSession, parseAramCandidates } from "./team-session.js"
 import type { LCUCredentials } from "../../src/types/lcu.js"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -55,10 +55,12 @@ function send(win: BrowserWindow, channel: string, value?: unknown) {
   if (!win.isDestroyed() && !win.webContents.isDestroyed()) win.webContents.send(channel, value)
 }
 function clearPicks(win: BrowserWindow) {
+  send(win, "aram-candidates", null)
   send(win, "team-picks", null)
   send(win, "pick", null)
 }
 function sendSession(win: BrowserWindow, session: unknown) {
+  send(win, "aram-candidates", parseAramCandidates(session))
   const picks = parseTeamSession(session)
   send(win, "team-picks", picks.team)
   send(win, "pick", picks.own)
