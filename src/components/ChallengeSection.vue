@@ -149,6 +149,7 @@ const filterOptions = computed(() => {
     </div>
 
     <div class="selected-champ-container">
+      <slot name="preview">
       <div>
         <div class="selected-champ-text">Champ Select Preview</div>
         <div v-if="selectedChamp" class="selected-champ-done-label">
@@ -191,6 +192,7 @@ const filterOptions = computed(() => {
           />
         </div>
       </div>
+      </slot>
     </div>
 
     <div class="champions-container">

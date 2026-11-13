@@ -1,6 +1,6 @@
 {
   "name": "lol-challenge-tracker",
-  "version": "1.2.0-team.1",
+  "version": "1.2.0-team.3",
   "main": "dist-electron/main/index.js",
   "description": "",
   "private": true,

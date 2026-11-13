@@ -5,7 +5,7 @@ import path from "node:path"
 test("Electron: Japanese groups, progress, picks, switching, unknown state and disconnect", async () => {
   await mkdir("test-results", { recursive: true })
   const profile = await mkdtemp(path.resolve("test-results/profile-"))
-  const environment = { ...process.env, LOL_TRACKER_USER_DATA: profile }
+  const environment = { ...process.env, LOL_TRACKER_USER_DATA: profile, LOL_TRACKER_DISABLE_CLIENT_DISCOVERY: "1" }
   delete environment.ELECTRON_RUN_AS_NODE
   const app = await electron.launch({
     ...(process.env.TRACKER_TEST_EXE
@@ -112,13 +112,15 @@ test("Electron: Japanese groups, progress, picks, switching, unknown state and d
     await expect(page.getByRole("heading", { level: 1 })).toContainText("S+ テスト (1 / 5)")
     await expect(page.locator(".selected-champ-done-label")).toContainText("Done")
     await send("aram-candidates", [1, 2, 3, 4, 5, 999])
-    await expect(page.locator(".aram-candidate")).toHaveCount(6)
+    await expect(page.locator(".selected-champ-container .aram-candidate img")).toHaveCount(6)
     await expect(page.locator(".aram-candidates")).toContainText("進捗未取得")
     challenges[101301] = { name: "ARAM 全チャンピオン", completedIds: [1, 3] }
     await page.getByRole("button", { name: "更新", exact: true }).click()
-    await expect(page.locator(".aram-candidate").first()).toContainText("達成済み")
-    await expect(page.locator(".aram-candidate").nth(1)).toContainText("未達成")
+    await expect(page.locator(".aram-candidate").first()).toContainText("Done")
+    await expect(page.locator(".aram-candidate").nth(1)).toContainText("Not Done")
     await expect(page.locator(".aram-candidate").last()).toContainText("チャンピオン #999")
+    await expect.poll(() => page.locator(".aram-candidate img").first().evaluate((image: HTMLImageElement) => image.naturalWidth), { timeout: 30000 }).toBeGreaterThan(0)
+    await page.screenshot({ path: "test-results/aram-preview-icons.png", fullPage: true })
     await send("team-picks", [1, 2])
     await expect(page.locator(".aram-candidate").nth(2)).toContainText("ベンチ")
     await send("aram-candidates", [1, 2, 4])

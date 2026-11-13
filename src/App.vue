@@ -259,13 +259,6 @@ onMounted(async () => {
       </button>
     </div>
     <p v-if="error" class="error" role="alert">{{ error }}</p>
-    <AramCandidates
-      v-if="aramCandidates !== null"
-      :candidate-ids="aramCandidates"
-      :champions="allChampions"
-      :raw-map="rawMap"
-      :own-pick="ownPick"
-    />
     <TeamChallenges
       v-if="group !== 'champions'"
       :key="group"
@@ -291,7 +284,17 @@ onMounted(async () => {
         :is-colored-when-done="isColoredWhenDone"
         :show-champion-names="showChampionNames"
         :stats="stats"
-      />
+      >
+        <template v-if="aramCandidates !== null" #preview>
+          <AramCandidates
+            :candidate-ids="aramCandidates"
+            :champions="allChampions"
+            :raw-map="rawMap"
+            :own-pick="ownPick"
+            :is-colored-when-done="isColoredWhenDone"
+          />
+        </template>
+      </ChallengeSection>
       <p v-else class="waiting">
         {{
           credentials
