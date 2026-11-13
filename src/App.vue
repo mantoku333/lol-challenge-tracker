@@ -265,7 +265,6 @@ onMounted(async () => {
       :champions="allChampions"
       :raw-map="rawMap"
       :own-pick="ownPick"
-      :team-picks="teamPicks"
     />
     <TeamChallenges
       v-if="group !== 'champions'"

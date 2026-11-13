@@ -9,13 +9,12 @@ const props = defineProps<{
   champions: Champion[]
   rawMap: Record<string, RawChallenge>
   ownPick: number | null
-  teamPicks: number[] | null
 }>()
 const aramChallenges = computed(() => challengeWithCompletion.filter((item) => item.gameMode === "Aram"))
 const candidates = computed(() => props.candidateIds.map((id) => ({
   id,
   name: props.champions.find((champion) => champion.id === id)?.name ?? `チャンピオン #${id}`,
-  location: id === props.ownPick ? "自分のピック" : props.teamPicks?.includes(id) ? "味方のピック" : "ベンチ",
+  location: id === props.ownPick ? "自分のピック" : "ベンチ",
 })))
 function status(challengeId: string, championId: number) {
   const completed = props.rawMap[challengeId]?.completedIds
@@ -27,7 +26,7 @@ function status(challengeId: string, championId: number) {
 <template>
   <section class="aram-candidates" aria-labelledby="aram-candidates-heading">
     <h2 id="aram-candidates-heading">ARAM ピック候補のチャレンジ</h2>
-    <p>味方のピック・ベンチの全候補に対する、自分の達成状況です。</p>
+    <p>自分のピック・ベンチの全候補に対する、自分の達成状況です。</p>
     <div class="aram-candidate-grid">
       <article v-for="candidate in candidates" :key="candidate.id" class="aram-candidate">
         <strong>{{ candidate.name }}</strong>
