@@ -262,6 +262,7 @@ async function main() {
     const owner = BrowserWindow.fromWebContents(event.sender)
     if (!owner) return
     stopWatching?.()
+    if (process.env.LOL_TRACKER_DISABLE_CLIENT_DISCOVERY === "1") return
     stopWatching = watchForClient(owner)
   }
   ipcMain.on("app-ready", start)

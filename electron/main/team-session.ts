@@ -34,8 +34,8 @@ export function parseAramCandidates(data: unknown): number[] | null {
   const picks = parseTeamSession(data)
   if (!picks.team) return null
   const bench = Array.isArray(session.benchChampions) ? session.benchChampions : []
-  return [...new Set([
+  return Array.from(new Set([
     picks.own,
     ...bench.map((champion) => champion?.championId),
-  ].filter((id): id is number => typeof id === "number" && Number.isSafeInteger(id) && id > 0))]
+  ].filter((id): id is number => typeof id === "number" && Number.isSafeInteger(id) && id > 0)))
 }

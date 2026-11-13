@@ -5,7 +5,7 @@ import path from "node:path"
 test("Electron: Japanese groups, progress, picks, switching, unknown state and disconnect", async () => {
   await mkdir("test-results", { recursive: true })
   const profile = await mkdtemp(path.resolve("test-results/profile-"))
-  const environment = { ...process.env, LOL_TRACKER_USER_DATA: profile }
+  const environment = { ...process.env, LOL_TRACKER_USER_DATA: profile, LOL_TRACKER_DISABLE_CLIENT_DISCOVERY: "1" }
   delete environment.ELECTRON_RUN_AS_NODE
   const app = await electron.launch({
     ...(process.env.TRACKER_TEST_EXE
