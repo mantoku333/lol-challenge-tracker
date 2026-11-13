@@ -26,3 +26,16 @@ export function parseTeamSession(data: unknown): { team: number[] | null; own: n
   }
   return { team, own }
 }
+// benchEnabled identifies reroll champion select, including an empty bench.
+export function parseAramCandidates(data: unknown): number[] | null {
+  if (!data || typeof data !== "object") return null
+  const session = data as Record<string, unknown>
+  if (session.benchEnabled !== true) return null
+  const picks = parseTeamSession(data)
+  if (!picks.team) return null
+  const bench = Array.isArray(session.benchChampions) ? session.benchChampions : []
+  return [...new Set([
+    picks.own,
+    ...bench.map((champion) => champion?.championId),
+  ].filter((id): id is number => typeof id === "number" && Number.isSafeInteger(id) && id > 0))]
+}

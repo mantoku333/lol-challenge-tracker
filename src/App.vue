@@ -13,6 +13,7 @@ import ChallengeSection from "./components/ChallengeSection.vue"
 import TeamChallenges from "./components/TeamChallenges.vue"
 import Settings from "./components/Settings.vue"
 import LeagueDropdown from "./components/LeagueDropdown.vue"
+import AramCandidates from "./components/AramCandidates.vue"
 
 const credentials = ref<LCUCredentials | null>(null)
 const allChampions = ref<Champion[]>([])
@@ -22,6 +23,7 @@ const rawMap = ref<Record<string, RawChallenge>>({})
 const stats = ref<AramStats | null>(null)
 const ownPick = ref<number | null>(null)
 const teamPicks = ref<number[] | null>(null)
+const aramCandidates = ref<number[] | null>(null)
 const group = ref<"champions" | TeamChallengeGroup>("champions")
 const selectedChallengeIndex = ref(0)
 const isColoredWhenDone = ref(false)
@@ -131,6 +133,7 @@ const updateSettings = (settings: StoredSettings) => {
   window.ipcRenderer.send("store-set", "settings", JSON.stringify(settings))
 }
 const clearPicks = () => {
+  aramCandidates.value = null
   ownPick.value = null
   teamPicks.value = null
 }
@@ -159,6 +162,9 @@ window.ipcRenderer.on("pick", (_event, id: number | null) => {
 window.ipcRenderer.on("team-picks", (_event, ids: number[] | null) => {
   teamPicks.value = ids
 })
+window.ipcRenderer.on("aram-candidates", (_event, ids: number[] | null) => {
+  aramCandidates.value = Array.isArray(ids) ? [...new Set(ids.filter(isChampionId))] : null
+})
 window.ipcRenderer.on("picks-connected", (_event, connected: boolean) => {
   picksConnected.value = connected
   if (!connected) clearPicks()
@@ -172,6 +178,7 @@ window.ipcRenderer.on("end-of-game", () => {
 window.ipcRenderer.on(
   "game-start",
   (_event, selections: { championId: number; puuid: string }[]) => {
+    aramCandidates.value = null
     teamPicks.value = null
     const championId = selections?.find(
       (selection) => selection.puuid === summoner.value?.puuid,
@@ -252,6 +259,13 @@ onMounted(async () => {
       </button>
     </div>
     <p v-if="error" class="error" role="alert">{{ error }}</p>
+    <AramCandidates
+      v-if="aramCandidates !== null"
+      :candidate-ids="aramCandidates"
+      :champions="allChampions"
+      :raw-map="rawMap"
+      :own-pick="ownPick"
+    />
     <TeamChallenges
       v-if="group !== 'champions'"
       :key="group"
